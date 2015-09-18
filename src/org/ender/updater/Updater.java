@@ -36,26 +36,20 @@ public class Updater {
 					if (Updater.this.correct_platform(item)) {
 						Updater.this.init(item);
 						if (Updater.this.has_update(item)) {
-							if (item.file.getName().equals(Main.JarName)) {
+							if (item.manual) {
 								success = false;
-								Updater.this.listener.log(String.format("Please manually download this file"));
-								Updater.this.listener.log(String.format("%s", new Object[]{item.link}));
-								break;
 							}
-
 							Updater.this.download(item);
 							if (item.extract != null) {
 								Updater.this.extract(item);
 							}
 						} else {
-							Updater.this.listener.log(String.format("No updates for '%s'", new Object[]{item.file.getName()}));
+							Updater.this.listener.log(String.format("No updates for <a href=\"%s\">%s</a>", new Object[]{item.link, item.file.getName()}));
 						}
 					}
 				}
 
-				if (success) {
-					Updater.this.listener.finished();
-				}
+				Updater.this.listener.finished(success);
 			}
 		});
 		t.setDaemon(true);
@@ -107,7 +101,7 @@ public class Updater {
 	}
 
 	private void download(UpdaterConfig.Item item) {
-		this.listener.log(String.format("Downloading '%s' [%s]", new Object[]{item.file.getName(), Helper.readableFileSize(item.size)}));
+		this.listener.log(String.format("Downloading <a href=\"%s\">%s</a> [%s]", new Object[]{item.link, item.file.getName(), Helper.readableFileSize(item.size)}));
 		try {
 			URL link = new URL(item.link);
 			ReadableByteChannel rbc = Channels.newChannel(link.openStream());

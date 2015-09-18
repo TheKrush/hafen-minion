@@ -101,6 +101,7 @@ public class UpdaterConfig {
 		if (e.length() > 0) {
 			itm.extract = new File(dir, e);
 		}
+		itm.manual = Boolean.valueOf(el.getAttribute("manual"));
 		return itm;
 	}
 
@@ -114,5 +115,6 @@ public class UpdaterConfig {
 		public long date = 0L;
 		public long size = 0L;
 		public File extract = null;
+		public Boolean manual = false;
 	}
 }
