@@ -86,13 +86,13 @@ public class UpdaterConfig {
 		if (el.hasAttribute("folder")) {
 			itm.folder = new File(dir, el.getAttribute("folder"));
 		} else {
-			int i = itm.link.lastIndexOf("/");
+			int i = itm.link.lastIndexOf('/');
 			itm.folder = dir;
 		}
 		if (el.hasAttribute("file")) {
 			itm.file = new File(itm.folder, el.getAttribute("file"));
 		} else {
-			int i = itm.link.lastIndexOf("/");
+			int i = itm.link.lastIndexOf('/');
 			itm.file = new File(itm.folder, itm.link.substring(i + 1));
 		}
 		itm.os = el.getAttribute("os");
