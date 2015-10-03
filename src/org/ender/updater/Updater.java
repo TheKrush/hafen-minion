@@ -8,7 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -18,6 +20,14 @@ public class Updater {
 
 	public UpdaterConfig cfg;
 	private final IUpdaterListener listener;
+
+	private final List<String> testJars = new ArrayList<String>() {
+		{
+			add("client-res.jar");
+			add("hafen.jar");
+			add("hafen-minion.jar");
+		}
+	};
 
 	public Updater(IUpdaterListener listener) {
 		this.listener = listener;
@@ -71,7 +81,7 @@ public class Updater {
 
 	private boolean has_update(UpdaterConfig.Item item) {
 		try {
-			boolean testing = (Main.TESTING && ("hafen.jar".equals(item.file.getName()) || "hafen-minion.jar".equals(item.file.getName())));
+			boolean testing = Main.TESTING && testJars.contains(item.file.getName());
 			URL url = new URL(item.link);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("HEAD");
